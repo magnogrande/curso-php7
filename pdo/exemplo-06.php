@@ -1,4 +1,8 @@
 <?php
+// Adicionando novos arquivos ao repositório do github
+// 1 - git add --all
+// 2 - git commit -m "Mensagem"
+// 3 - git push origin master
 
 // PDO - Usando transações
 
@@ -8,7 +12,6 @@ $conn = new PDO("sqlsrv:Database=dbphp7;server=localhost\SQLEXPRESS;ConnectionPo
 // $conn = new PDO("mysql:dbname=dbphp7;host=localhost", "root", "");
 
 // Desabilita o commit atuomático, permitindo um controle melhor sobre a execução de transações
-//
 $conn->beginTransaction();
 
 // $stmt = $conn->prepare("SELECT * FROM tb_usuarios order by deslogin");
