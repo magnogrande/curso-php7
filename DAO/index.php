@@ -1,18 +1,21 @@
 <?php
 
-// Orientação a Objetos - namespace - Permite organizar classes em um diretório específico
+// DAO - Data Access Object - Permite abstrair melhor o código
+// e sua interação com o Banco de dados
 require_once("config.php");
 
-// Usando um NAMESPACE - Utilizando a classe Cadastro dentro do diretório Cliente.
-use Cliente\Cadastro;
+// Usando um NAMESPACE - Utilizando a classe SQL dentro do diretório Class.
+// use sql;
 
-$cad = new Cadastro();
+$sql = new SQL();
 
-$cad->setNome("Magno Almeida");
-$cad->setEmail("magnogrande@gmail.com");
-$cad->setSenha("123456");
+// $usuarios = $sql->select("SELECT * FROM tb_usuarios");
 
-// O método mágico __toString será invocado para exibir o resultado na tela convertido em JSON
-// echo $cad;
-echo "<br>";
-echo $cad->registrarVenda();
+$root = new Usuario();
+
+// Chama o método usado para consultar o usuário pelo ID no banco de dados
+$root->loadById(2);
+
+// Utiliza o método mágico __toString para imprimir o resutado da consulta na
+// em formato JSON
+echo $root;

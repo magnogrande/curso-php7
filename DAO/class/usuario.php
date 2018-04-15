@@ -2,48 +2,74 @@
 
 // namespace - Permite organizar classes em um diretório específico
 
-class Cadastro
+class Usuario
 {
-    private $nome;
-    private $email;
-    private $senha;
+    private $idusuario;
+    private $deslogin;
+    private $dessenha;
+    private $dtcadastro;
 
     // GET
-    public function getNome():string
+    public function getIdusuario()
     {
-        return $this->nome;
+        return $this->idusuario;
     }
-    public function getEmail():string
+    public function getDeslogin()
     {
-        return $this->email;
+        return $this->deslogin;
     }
-    public function getSenha():string
+    public function getDessenha()
     {
-        return $this->senha;
+        return $this->dessenha;
+    }
+    public function getDtcadastro()
+    {
+        return $this->dtcadastro;
     }
 
     // SET
-    public function setNome($nome)
+    public function setIdusuario($value)
     {
-        $this->nome = $nome;
+        $this->idusuario = $value;
     }
-    public function setEmail($email)
+    public function setDeslogin($value)
     {
-        $this->email = $email;
+        $this->deslogin = $value;
     }
-    public function setSenha($senha)
+    public function setDessenha($value)
     {
-        $this->senha = $senha;
+        $this->dessenha = $value;
+    }
+    public function setDtcadastro($value)
+    {
+        $this->dtcadastro = $value;
     }
 
-    // Método para criar uma string com os parâmentros da classe
+    // Preenche os atributos com as informações recebidas do banco de dados
+    public function loadById($id)
+    {
+        $sql = new SQL();
+        $results = $sql->select("SELECT * FROM tb_usuarios WHERE idusuario = :ID", array(":ID"=>$id));
+
+        if (count($results) > 0) {
+            # code...
+            $row = $results[0];
+
+            $this->setIdusuario($row['idusuario']);
+            $this->setDeslogin($row['deslogin']);
+            $this->setDessenha($row['dessenha']);
+            $this->setDtcadastro(new DateTime($row['dtcadastro']));
+        }
+    }
+    // Método mágico para criar uma string com os parâmentros da classe
     // Retornando em formato JSON
     public function __toString()
     {
         return json_encode(array(
-        'nome' => $this->nome,
-        'email' => $this->email,
-        'senha' => $this->senha
+        'idusuario' => $this->getIdusuario(),
+        'deslogin' => $this->getDeslogin(),
+        'dessenha' => $this->getDessenha(),
+        'dtcadastro' => $this->getDtcadastro()->format("d/m/Y H:i:s")
       ));
     }
 }
