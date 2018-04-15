@@ -45,7 +45,7 @@ class Usuario
         $this->dtcadastro = $value;
     }
 
-    // Preenche os atributos com as informações recebidas do banco de dados
+    // Método que um usuário usuário da tabela de banco de Dados
     public function loadById($id)
     {
         $sql = new SQL();
@@ -61,6 +61,46 @@ class Usuario
             $this->setDtcadastro(new DateTime($row['dtcadastro']));
         }
     }
+
+    // Método que cria uma lista com todos os usuários da tabela de banco de Dados
+    public static function getList()
+    {
+        $sql = new SQL();
+        return $sql->select("SELECT * FROM tb_usuarios order by deslogin;");
+    }
+
+    // Método que cria uma lista de usuários da tabela de banco de Dados
+    public static function search($login)
+    {
+        $sql = new SQL();
+        return $sql->select("SELECT * FROM tb_usuarios where deslogin like :SEARCH order by deslogin", array(
+          ':SEARCH'=>"%".$login."%"
+        ));
+    }
+
+    // Método que carrega o na memória o usuário pelo login e senha
+    public function login($login, $password)
+    {
+        $sql = new SQL();
+        $results = $sql->select("SELECT * FROM tb_usuarios WHERE deslogin = :LOGIN and dessenha = :PASSWORD", array(
+        ":LOGIN"=>$login,
+        ":PASSWORD"=>$password
+      ));
+
+        if (count($results) > 0) {
+            # code...
+            $row = $results[0];
+
+            $this->setIdusuario($row['idusuario']);
+            $this->setDeslogin($row['deslogin']);
+            $this->setDessenha($row['dessenha']);
+            $this->setDtcadastro(new DateTime($row['dtcadastro']));
+        } else {
+            # code...
+            throw new Exception("Login ou senha inválido", 1);
+        }
+    }
+
     // Método mágico para criar uma string com os parâmentros da classe
     // Retornando em formato JSON
     public function __toString()
