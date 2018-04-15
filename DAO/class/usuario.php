@@ -45,7 +45,7 @@ class Usuario
         $this->dtcadastro = $value;
     }
 
-    // Método que um usuário usuário da tabela de banco de Dados
+    // Método que carrega um usuário do banco de Dados para a memória do sistema
     public function loadById($id)
     {
         $sql = new SQL();
@@ -84,7 +84,6 @@ class Usuario
 
         if (count($results) > 0) {
             # code...
-
             $this->setData($results[0]);
         } else {
             # code...
@@ -125,7 +124,7 @@ class Usuario
     {
         $this->setDeslogin($login);
         $this->setDessenha($password);
-        
+
         $sql = new SQL();
         $results = $sql->select("update tb_usuarios set deslogin = :LOGIN, dessenha = :PASSWORD where idusuario = :ID", array(
           ":LOGIN"=>$this->getDeslogin(),
@@ -143,12 +142,27 @@ class Usuario
         // }
     }
 
-    // Método construtor para incializar as variáveis deslogin e dessenha
-    public function __construct($login="", $password="")
+    // Método para atualizar um novo registro no banco de dados
+    public function delete()
     {
-        $this->setDeslogin($login);
-        $this->setDessenha($password);
+        $sql = new SQL();
+        $results = $sql->select("delete from tb_usuarios where idusuario = :ID", array(
+          ":ID"=>$this->getIdusuario()
+        ));
+
+        // Limpando as variáveis do sistema
+        $this->setIdusuario(0);
+        $this->setDeslogin("");
+        $this->setDessenha("");
+        $this->setDtcadastro(new DateTime());
     }
+
+    // Método construtor para incializar as variáveis deslogin e dessenha
+    // public function __construct($login="", $password="")
+    // {
+    //     $this->setDeslogin($login);
+    //     $this->setDessenha($password);
+    // }
 
     // Método mágico para criar uma string com os parâmentros da classe
     // Retornando em formato JSON

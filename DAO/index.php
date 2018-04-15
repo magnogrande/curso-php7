@@ -38,9 +38,12 @@ $root = new Usuario();
 $root->insert();
 
 // Carrega o usuário com ID = 2 para memória
-$root->loadById(2);
+$root->loadById(4);
 // Atualiza o usuário com o novo login e senha
-$root->update("aluno", "3838");
+// $root->update("aluno", "3838");
+
+// Apaga um usuário do sistema
+$root->delete();
 
 echo $root;
 // echo json_encode($search);
