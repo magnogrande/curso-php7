@@ -11,7 +11,7 @@ require_once("config.php");
 
 // $usuarios = $sql->select("SELECT * FROM tb_usuarios");
 
-$root = new Usuario();
+// $root = new Usuario();
 
 // Chama o método usado para carregar um usuário pelo ID na mamória
 // $root->loadById(2);
@@ -24,11 +24,23 @@ $root = new Usuario();
 // $lista = Usuario::getList();
 
 //Carrega uma lista de usuários pesquisando pelo campo LOGIN
-// $search = Usuario::search("e");
+// $search = Usuario::search("e")
 // Utiliza o método mágico __toString para imprimir o resutado da consulta na
 // em formato JSON
 
 // Chama o método usado para carregar um usuário pelo login e senha  na mamória
-$root->login("user", "123456");
+
+$root = new Usuario();
+// $root->setDeslogin("aluno");
+// $root->setDessenha("7777777");
+
+// Criando um novo usuário com o método insert
+$root->insert();
+
+// Carrega o usuário com ID = 2 para memória
+$root->loadById(2);
+// Atualiza o usuário com o novo login e senha
+$root->update("aluno", "3838");
+
 echo $root;
 // echo json_encode($search);

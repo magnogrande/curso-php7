@@ -53,12 +53,7 @@ class Usuario
 
         if (count($results) > 0) {
             # code...
-            $row = $results[0];
-
-            $this->setIdusuario($row['idusuario']);
-            $this->setDeslogin($row['deslogin']);
-            $this->setDessenha($row['dessenha']);
-            $this->setDtcadastro(new DateTime($row['dtcadastro']));
+            $this->setData($results[0]);
         }
     }
 
@@ -89,16 +84,70 @@ class Usuario
 
         if (count($results) > 0) {
             # code...
-            $row = $results[0];
 
-            $this->setIdusuario($row['idusuario']);
-            $this->setDeslogin($row['deslogin']);
-            $this->setDessenha($row['dessenha']);
-            $this->setDtcadastro(new DateTime($row['dtcadastro']));
+            $this->setData($results[0]);
         } else {
             # code...
             throw new Exception("Login ou senha inválido", 1);
         }
+    }
+
+    // Método para carregar os dados na memória
+    public function setData($data)
+    {
+        $this->setIdusuario($data['idusuario']);
+        $this->setDeslogin($data['deslogin']);
+        $this->setDessenha($data['dessenha']);
+        $this->setDtcadastro(new DateTime($data['dtcadastro']));
+    }
+
+    // Método para inserir um novo usuário no banco de dados
+    public function insert()
+    {
+        $sql = new SQL();
+        $results = $sql->select("call sp_usuarios_insert (:LOGIN, :PASSWORD)", array(
+          ":LOGIN"=>$this->getDeslogin(),
+          ":PASSWORD"=>$this->getDessenha()
+        ));
+
+        if (count($results) > 0) {
+            # code...
+            $this->setData($results[0]);
+        }
+        // else {
+        //     # code...
+        //     throw new Exception("Login ou senha inválido", 1);
+        // }
+    }
+
+    // Método para atualizar um novo registro no banco de dados
+    public function update($login, $password)
+    {
+        $this->setDeslogin($login);
+        $this->setDessenha($password);
+        
+        $sql = new SQL();
+        $results = $sql->select("update tb_usuarios set deslogin = :LOGIN, dessenha = :PASSWORD where idusuario = :ID", array(
+          ":LOGIN"=>$this->getDeslogin(),
+          ":PASSWORD"=>$this->getDessenha(),
+          ":ID"=>$this->getIdusuario()
+        ));
+
+        if (count($results) > 0) {
+            # code...
+            $this->setData($results[0]);
+        }
+        // else {
+        //     # code...
+        //     throw new Exception("Login ou senha inválido", 1);
+        // }
+    }
+
+    // Método construtor para incializar as variáveis deslogin e dessenha
+    public function __construct($login="", $password="")
+    {
+        $this->setDeslogin($login);
+        $this->setDessenha($password);
     }
 
     // Método mágico para criar uma string com os parâmentros da classe

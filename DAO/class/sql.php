@@ -17,9 +17,9 @@ class Sql extends PDO
     {
 
         //SQLSERVER
-        $this->conn = new PDO("sqlsrv:Database=dbphp7;server=localhost\SQLEXPRESS;ConnectionPooling=0", "sa", "root");
+        // $this->conn = new PDO("sqlsrv:Database=dbphp7;server=localhost\SQLEXPRESS;ConnectionPooling=0", "sa", "root");
         // MySQL
-        // $this->conn = new PDO("mysql:dbname=dbphp7;host=localhost", "root", "");
+        $this->conn = new PDO("mysql:dbname=dbphp7;host=localhost", "root", "");
     }
 
     // Método esponsável pela atribuição de cada parâmetro com os campos informados na query
